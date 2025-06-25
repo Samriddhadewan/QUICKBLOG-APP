@@ -24,6 +24,12 @@ const Blog = () => {
     fetchComments();
   }, [id]);
 
+  const addComment =(e)=>{
+    e.preventDefault();
+  }
+
+
+
   return data ? (
     <div className="relative">
       <img
@@ -73,6 +79,19 @@ const Blog = () => {
               ))
             }
           </div>
+        </div>
+
+        {/* comment section  */}
+        <div className="max-w-3xl mx-auto">
+          <p className="font-semibold mb-4">Add Your comment</p>
+          <form onClick={addComment} className="flex flex-col items-start gap-4 mx-w-lg" >
+            
+            <input type="text" name="name" id="" className="w-full p-2 border border-gray-300 rounded outline-none" />
+
+            <textarea name="" id="" className="w-full p-2 border border-gray-300 rounded outline-none h-48"></textarea>
+
+            <button type="submit" className="bg-primary text-white rounded p-2 px-8 hover:scale-105 transition-all cursor-pointer">Add Your comment</button>
+          </form>
         </div>
       </div>
     </div>
