@@ -4,10 +4,13 @@ import { assets, blog_data, comments_data } from "../assets/assets";
 import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
 import moment from "moment";
+import Footer from "../components/Footer";
 
 const Blog = () => {
   const [data, setData] = useState(null);
   const [comments, setComments] = useState([]);
+  const [name, setName]= useState("");
+  const [comment, setComment]= useState("");
 
   const { id } = useParams();
 
@@ -84,15 +87,26 @@ const Blog = () => {
         {/* comment section  */}
         <div className="max-w-3xl mx-auto">
           <p className="font-semibold mb-4">Add Your comment</p>
-          <form onClick={addComment} className="flex flex-col items-start gap-4 mx-w-lg" >
+          <form onClick={addComment} className="flex flex-col gap-4 mx-w-lg" >
             
-            <input type="text" name="name" id="" className="w-full p-2 border border-gray-300 rounded outline-none" />
+            <input onChange={(e)=>setName(e.target.value)} value={name} type="text" name="name" id="" className="w-full p-2 border border-gray-300 rounded outline-none" placeholder="Enter Your name" />
 
-            <textarea name="" id="" className="w-full p-2 border border-gray-300 rounded outline-none h-48"></textarea>
+            <textarea onChange={(e)=>setComment(e.target.value)} value={comment} placeholder="Enter Your comment" name="" id="" className="w-full p-2 border border-gray-300 rounded outline-none h-48"></textarea>
 
             <button type="submit" className="bg-primary text-white rounded p-2 px-8 hover:scale-105 transition-all cursor-pointer">Add Your comment</button>
           </form>
         </div>
+
+        {/* social share icons  */}
+        <div className="my-24 max-w-3xl mx-auto">
+            <p className="font-semibold my-4">Share This Article in social media</p>
+            <div className="flex">
+              <img src={assets.facebook_icon} width={45} alt="" />
+              <img src={assets.twitter_icon} width={45} alt="" />
+              <img src={assets.googleplus_icon} width={45} alt="" />
+            </div>
+        </div>
+        <Footer />
       </div>
     </div>
   ) : (

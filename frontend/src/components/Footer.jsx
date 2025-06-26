@@ -1,4 +1,3 @@
-import { div, li } from "motion/react-client";
 import { assets, footer_data } from "../assets/assets";
 
 const Footer = () => {
