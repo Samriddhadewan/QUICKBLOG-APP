@@ -1,1 +1,2 @@
-This is a bloging site
+Readme will be updated when the v1 releases
+
