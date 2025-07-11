@@ -16,7 +16,7 @@ const ListBlog = () => {
   console.log(blogs);
 
   return (
-    <div className="flex-1 px-5 pt-5 sm:pt-10 sm:pl-16 bg-blue-50/50 ">
+    <div className="flex-1 px-5 py-5 sm:pt-10 sm:pl-16 bg-blue-50/50 ">
       <p>All Blogs</p>
 
       <div className="relative mt-4 max-w-4xl h-4/5 overflow-x-auto shadow rounded-lg scrollbar-hide bg-white ">
