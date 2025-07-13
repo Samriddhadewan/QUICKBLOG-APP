@@ -1,6 +1,7 @@
 import fs from "fs";
 import imagekit from "../configs/imageKit.js";
 import Blog from "../models/Blog.js";
+import Blog from "../models/Blog.js";
 
 export const addBlog = async (req, res) => {
   try {
@@ -56,3 +57,48 @@ export const addBlog = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
+export const getAllBlogs = async(req, res)=>{
+  try {
+    const Blogs = Blog.find({isPublished: true})
+    res.json({success: true, Blogs})
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+}
+
+
+export const getBlogById = async(req, res)=>{
+  try {
+    const {blogId} = req.parse;
+    const blog = await Blog.findById(blogId);
+    if(!blog){
+     return res.json({success:false, message:"Blog Not Found"})
+    }
+    res.json({success:true, blog})
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+}
+
+export const deleteBlogById = async (req, res)=>{
+  try {
+    const {id} = req.body;
+    await Blog.findByIdAndDelete(id)
+    res.json({success: true, message:"Blog Deleted Successfully"})
+  } catch (error) {
+    res.json({success:false, message:error.message})
+  }
+}
+
+export const togglePublish = async(req,res)=>{
+  try {
+    const {id} = req.body;
+    const blog = await Blog.findById(id)
+    blog.isPublished = !isPublished;
+    await blog.save();
+    res.json({success:true, message:"Successfully Published The Blog"})
+  } catch (error) {
+    res.json({success:false, message:error.message})
+  }
+}
