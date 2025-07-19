@@ -1,7 +1,6 @@
 import fs from "fs";
 import imagekit from "../configs/imageKit.js";
 import Blog from "../models/Blog.js";
-import Blog from "../models/Blog.js";
 
 export const addBlog = async (req, res) => {
   try {
@@ -60,7 +59,7 @@ export const addBlog = async (req, res) => {
 
 export const getAllBlogs = async(req, res)=>{
   try {
-    const Blogs = Blog.find({isPublished: true})
+    const Blogs = await Blog.find({isPublished: true})
     res.json({success: true, Blogs})
   } catch (error) {
     res.json({ success: false, message: error.message });
@@ -70,7 +69,7 @@ export const getAllBlogs = async(req, res)=>{
 
 export const getBlogById = async(req, res)=>{
   try {
-    const {blogId} = req.parse;
+    const blogId = req.params.blogId.trim();
     const blog = await Blog.findById(blogId);
     if(!blog){
      return res.json({success:false, message:"Blog Not Found"})
@@ -95,7 +94,7 @@ export const togglePublish = async(req,res)=>{
   try {
     const {id} = req.body;
     const blog = await Blog.findById(id)
-    blog.isPublished = !isPublished;
+    blog.isPublished = !blog.isPublished;
     await blog.save();
     res.json({success:true, message:"Successfully Published The Blog"})
   } catch (error) {
