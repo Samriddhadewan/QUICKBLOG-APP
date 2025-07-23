@@ -11,7 +11,6 @@ import toast from "react-hot-toast";
 const Blog = () => {
   const { id } = useParams();
   const { axios } = useAppContext();
-
   const [data, setData] = useState(null);
   const [comments, setComments] = useState([]);
   const [name, setName] = useState("");
@@ -124,7 +123,7 @@ const Blog = () => {
         {/* comment section  */}
         <div className="max-w-3xl mx-auto">
           <p className="font-semibold mb-4">Add Your comment</p>
-          <form onClick={addComment} className="flex flex-col gap-4 mx-w-lg">
+          <form onSubmit={addComment} className="flex flex-col gap-4 mx-w-lg">
             <input
               onChange={(e) => setName(e.target.value)}
               value={name}
