@@ -33,7 +33,6 @@ export const AppProvider = ({ children }) => {
     }
   },[])
 
-  console.log(blogs)
 
 
 
