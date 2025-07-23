@@ -16,7 +16,8 @@ export const AppProvider = ({ children }) => {
 
   const fetchBlogs = async(req, res)=>{
     try {
-       const {data} = await axios.get("/api/blog/all")
+       const {data} = await axios.get("/api/blog/all");
+       console.log(data)
        data.success ? setBlogs(data.blogs) : toast.error(data.message) 
     } catch (error) {
         toast.error(error.message)
@@ -31,6 +32,8 @@ export const AppProvider = ({ children }) => {
         axios.defaults.headers.common['Authorization'] = `${token}`
     }
   },[])
+
+  console.log(blogs)
 
 
 
