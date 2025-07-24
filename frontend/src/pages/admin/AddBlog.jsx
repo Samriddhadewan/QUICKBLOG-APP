@@ -4,10 +4,12 @@ import Quill from "quill";
 import { option } from "motion/react-client";
 import { useAppContext } from "../../context/appContext";
 import toast from "react-hot-toast";
+import { parse } from "marked";
 
 const AddBlog = () => {
   const {axios} = useAppContext();
   const [isAdding, setIsAdding] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const editorRef = useRef(null)
   const quillRef = useRef(null)
@@ -20,14 +22,33 @@ const AddBlog = () => {
 
 
   const generateContent = async()=>{
-
+    if(!title) return toast.error("Please enter a title")
+      try {
+        setLoading(true);
+        const {data} = await axios.post("/api/blog/generate", {prompt: title})
+        if(data.success){
+          quillRef.current.root.innerHTML = parse(data.content)
+        }
+        else{
+          toast.error(data.message)
+        }
+      } catch (error) {
+        toast.error(error.message)
+      }
+      finally{
+        setLoading(false)
+      }
   }
   const onSubmitHanlder = async(e)=>{
     try {
       e.preventDefault();
       setIsAdding(true)
       const blog = {
-        title,subTitle, description : quillRef.current.root.innerHTML, category,isPublished
+        title,
+        subTitle, 
+        description : quillRef.current.root.innerHTML, 
+        category,
+        isPublished
       }
 
       const formData = new FormData();
@@ -45,7 +66,6 @@ const AddBlog = () => {
       else{
         toast.error(data.message)
       }
-
     } catch (error) {
       toast.error(error.message)
     }
@@ -83,10 +103,9 @@ const AddBlog = () => {
         
         <p className="mt-4">Blog Sub Title</p>
         <div className="max-w-lg h-74 pb-16 sm:pb-10 pt-2 relative">
-          <div ref={editorRef}>
-
-          </div>
-          <button className="absolute bottom-1 right-2 ml-2 text-xs text-white bg-black/70 px-4 py-1.5 round hover:underline cursor-pointer" type="button" onClick={generateContent}>Generate With AI</button>
+          <div ref={editorRef}></div>
+          {loading && ( <div className="absolute right-0 top-0 bottom-0 left-0 flex items-center justify-center"> <div className="w-8 h-8 rounded-full border-2 border-t-white animate-spin"></div>  </div> ) }
+          <button disabled={loading} className="absolute bottom-1 right-2 ml-2 text-xs text-white bg-black/70 px-4 py-1.5 round hover:underline cursor-pointer" type="button" onClick={generateContent}>Generate With AI</button>
         </div>
 
         <p className="mt-4">Blog Category</p>

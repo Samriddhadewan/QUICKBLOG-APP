@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react"
-import { assets, dashboard_data } from "../../assets/assets"
+import { assets } from "../../assets/assets"
 import BlockTable from "../../components/admin/BlockTable"
+import { useAppContext } from "../../context/appContext"
+import toast from "react-hot-toast"
 
 const Dashboard = () => {
+  const {axios} = useAppContext();
 
   const [dashboardData,setDashboardData]=useState({
     blogs: 0,
@@ -13,7 +16,13 @@ const Dashboard = () => {
 
 
   const fetchDashboardData = async () => {
-    setDashboardData(dashboard_data)
+    try {
+      const {data} = await axios.get("/api/admin/dashboard")
+      console.log(data)
+      data.success ? setDashboardData(data.dashboardData) : toast.error(data.message)
+    } catch (error) {
+      toast.error(error.message)
+    }
   }
 
   useEffect(()=>{
