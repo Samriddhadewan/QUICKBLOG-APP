@@ -5,7 +5,7 @@ import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
 import moment from "moment";
 import Footer from "../components/Footer";
-import { useAppContext } from "../context/appContext";
+import { useAppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
 
 const Blog = () => {
