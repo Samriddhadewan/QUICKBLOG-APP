@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 import { assets } from "../../assets/assets";
-import { useAppContext } from "../../context/appContext";
+import { useAppContext } from "../../context/AppContext";
 
 const BlockTable = ({blog,fetchBlogs,index}) => {
   const {axios} = useAppContext();
