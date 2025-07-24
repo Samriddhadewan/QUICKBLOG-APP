@@ -1,4 +1,6 @@
 import jwt from "jsonwebtoken";
+import Blog from "../models/Blog.js";
+import comment from "../models/Comment.js";
 
 export const adminLogin = async (req, res) => {
   try {
@@ -16,3 +18,69 @@ export const adminLogin = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
+
+export const getAllBlogsAdmin = async(req,res)=>{
+  try {
+    const blogs = await Blog.find({}).sort({createdAt: -1})
+    res.json({success: true, blogs})
+    
+  } catch (error) {
+    res.json({success: false, message: error.message})
+  }
+}
+
+export const getAllComments = async(req, res)=>{
+  try {
+    const comments = await comment.find({}).populate("blog").sort({createdAt: -1})
+    res.json({success: true, comments})
+  } catch (error) {
+    res.json({success: false, message: error.message})
+  }
+}
+
+
+export const getDashboard = async(req, res)=>{
+  try {
+    const recentBlogs = await Blog.find({}).sort({createdAt: -1}).limit(5)
+    const blogs = await blogRouter.countDocuments();
+    const comments = await comment.countDocuments()
+    const drafts = await Blog.countDocuments({isPublished : false})
+
+    const dashboardData = {
+      blogs,comments,drafts, recentBlogs
+    }
+
+    res.json({success: true, dashboardData})
+
+  } catch (error) {
+    res.json({success: false, message: error.message})
+  }
+}
+
+export const deleteCommentById = async(req, res)=>{
+  try {
+    const {id} = req.body;
+    await comment.findByIdAndDelete(id)
+
+    // DELETE ALL COMMENTS ASSOCIATED WITH THIS BLOG 
+    await comment.deleteMany({blog : id});
+
+    res.json({success: true, message: "Comment Deleted Successfully"})
+    
+  } catch (error) {
+    res.json({success: false, message: error.message})
+  }
+}
+
+export const approveCommentById = async(req, res)=>{
+  try {
+    const {id} = req.body;
+    await comment.findByIdAndUpdate(id, {isApproved: true});
+    res.json({success: true, message: "Comment Approved Successfully"})
+  } catch (error) {
+    req.json({success: false, message: error.message})    
+  }
+}
+
+

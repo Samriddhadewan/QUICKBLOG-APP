@@ -1,6 +1,7 @@
 import fs from "fs";
 import imagekit from "../configs/imageKit.js";
 import Blog from "../models/Blog.js";
+import comment from "../models/Comment.js";
 
 export const addBlog = async (req, res) => {
   try {
@@ -59,8 +60,8 @@ export const addBlog = async (req, res) => {
 
 export const getAllBlogs = async(req, res)=>{
   try {
-    const Blogs = await Blog.find({isPublished: true})
-    res.json({success: true, Blogs})
+    const blogs = await Blog.find({isPublished: true})
+    res.json({success: true, blogs})
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
@@ -99,5 +100,26 @@ export const togglePublish = async(req,res)=>{
     res.json({success:true, message:"Successfully Published The Blog"})
   } catch (error) {
     res.json({success:false, message:error.message})
+  }
+}
+
+
+export const addComment = async(req, res)=>{
+  try {
+    const {blog, name, content} = req.body; 
+    await comment.create({blog, name, content});
+    res.json({success: true, message:"Comment added for review"})
+  } catch (error) {
+    res.json({success: false, message: error.message})
+  }
+}
+
+export const getBlogComments = async(req, res)=>{
+  try {
+    const {blogId} = req.body;
+    const comments = await comment.find({blog: blogId, isApproved: true}).sort({createdAt: -1});
+    res.json({success: true, comments})
+  } catch (error) {
+    res.json({success: false, message:error.message})
   }
 }
