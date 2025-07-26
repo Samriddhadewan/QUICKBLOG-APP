@@ -1,2 +1,2 @@
-Readme will be updated when the v1 releases very soon
+Readme will be updated when the v1 releases very soon.
 
